@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GriffinUZ - Ultra Secure</title>
+    <style>
+        /* UMUMIY STIL */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #010409; color: #e6edf3; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+        /* SQUIRCLE LOGO (To'rtburchak-yoy) */
+        .logo-container {
+            width: 100px; height: 100px;
+            margin: 0 auto 20px;
+            background: #0d1117;
+            border-radius: 24%;
+            display: flex; justify-content: center; align-items: center;
+            border: 2px solid #3081f7;
+            box-shadow: 0 0 25px rgba(48, 129, 247, 0.6);
+            overflow: hidden;
+        }
+        .logo-container img { width: 85%; height: 85%; object-fit: contain; }
+
+        .icon-sq {
+            width: 35px; height: 35px;
+            background: #0d1117;
+            border-radius: 24%;
+            display: flex; justify-content: center; align-items: center;
+            border: 1px solid #3081f7;
+            margin-right: 15px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* KONTEYNER */
+        .auth-card {
+            width: 420px;
+            background: rgba(22, 27, 34, 0.98);
+            padding: 35px;
+            border-radius: 28px;
+            border: 1px solid #30363d;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            display: none;
+            transition: 0.4s ease;
+        }
+        .auth-card.active { display: block; animation: slideUp 0.4s ease-out; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { text-align: center; font-size: 20px; margin-bottom: 20px; color: #fff; }
+        p.desc { text-align: center; color: #8b949e; font-size: 13px; margin-bottom: 25px; line-height: 1.4; }
+
+        /* TIKLASH JARAYONI QADAMLARI */
+        .steps-box { margin-bottom: 25px; }
+        .step { display: flex; align-items: flex-start; margin-bottom: 15px; }
+        .step-info b { display: block; color: #58a6ff; font-size: 14px; margin-bottom: 2px; }
+        .step-info p { font-size: 12px; color: #8b949e; line-height: 1.3; }
+
+        /* INPUTS */
+        .input-field { margin-bottom: 18px; position: relative; }
+        .input-field input {
+            width: 100%;
+            padding: 15px 45px 15px 45px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-field input:focus { border-color: #58a6ff; box-shadow: 0 0 12px rgba(88, 166, 255, 0.2); }
+        .input-field i.main-icon { position: absolute; left: 15px; top: 16px; color: #58a6ff; font-style: normal; }
+        
+        /* KO'ZCHA TUGMASI */
+        .toggle-pass {
+            position: absolute; right: 15px; top: 16px;
+            cursor: pointer; color: #8b949e; font-style: normal;
+            transition: 0.3s;
+        }
+        .toggle-pass:hover { color: #58a6ff; }
+
+        /* TUGMA */
+        .btn-action {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, #1f6feb, #0969da);
+            border: none; border-radius: 12px;
+            color: white; font-weight: 700; cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-action:hover { box-shadow: 0 0 20px rgba(88, 166, 255, 0.5); transform: translateY(-1px); }
+
+        .switch-link { text-align: center; margin-top: 20px; font-size: 13px; color: #8b949e; }
+        .switch-link b { color: #58a6ff; cursor: pointer; }
+        .back-arrow { cursor: pointer; color: #58a6ff; font-size: 13px; display: block; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="loginBox" class="auth-card active">
+        <div class="logo-container"><img src="images/logo.png" alt="Logo"></div>
+        <h2>GriffinUZ</h2>
+        <p class="desc">Tizimga kirish uchun ID va parolingizni tasdiqlang</p>
+        <div class="input-field">
+            <i class="main-icon">🆔</i>
+            <input id="logID" type="number" placeholder="Telegram ID">
+        </div>
+        <div class="input-field">
+            <i class="main-icon">🔒</i>
+            <input id="logPass" type="password" placeholder="Parol">
+            <i class="toggle-pass" onclick="toggleVisibility('logPass')">👁️</i>
+        </div>
+        <button class="btn-action" onclick="handleLogin()">DAVOM ETISH</button>
+        <div class="switch-link">
+            Hisobingiz yo'qmi? <b onclick="showPage('regBox')">Ro'yxatdan o'tish</b><br><br>
+            <b onclick="showPage('forgotBox')">Parolni unutdingizmi?</b>
+        </div>
+    </div>
+
+    <div id="regBox" class="auth-card">
+        <span class="back-arrow" onclick="showPage('loginBox')">← Orqaga</span>
+        <div class="logo-container"><img src="images/logo.png" alt="Logo"></div>
+        <h2>Ro'yxatdan o'tish</h2>
+        <p class="desc">Bitta telefon raqamdan faqat bir marta foydalanish mumkin.</p>
+        <div class="input-field"><i class="main-icon">👤</i><input id="regName" placeholder="To'liq ism"></div>
+        <div class="input-field"><i class="main-icon">📱</i><input id="regPhone" type="tel" placeholder="Telefon raqam"></div>
+        <div class="input-field"><i class="main-icon">📧</i><input id="regID" type="number" placeholder="Telegram ID"></div>
+        <div class="input-field">
+            <i class="main-icon">🔒</i>
+            <input id="regPass" type="password" placeholder="Parol">
+            <i class="toggle-pass" onclick="toggleVisibility('regPass')">👁️</i>
+        </div>
+        <button class="btn-action" onclick="handleRegister()">KODNI OLISH</button>
+    </div>
+
+    <div id="forgotBox" class="auth-card">
+        <span class="back-arrow" onclick="showPage('loginBox')">← Orqaga</span>
+        <div class="logo-container"><img src="images/logo.png" alt="Logo"></div>
+        <h2>Tiklash jarayoni (4 ta asosiy qadam)</h2>
+        <div class="steps-box">
+            <div class="step"><div class="icon-sq">🔍</div><div class="step-info"><b>Hisobni aniqlash:</b><p>Sizning foydalanuvchi Telegram ID orqali baza tizimdan qidirib topiladi.</p></div></div>
+            <div class="step"><div class="icon-sq">🤖</div><div class="step-info"><b>Tasdiqlash kodi:</b><p>Profilingizga biriktirilgan botga 6 xonali maxsus kod yuboriladi.</p></div></div>
+            <div class="step"><div class="icon-sq">🔑</div><div class="step-info"><b>Yangi parol:</b><p>Kod tasdiqlangandan so‘ng, yangi yaratilgan parol bazaga yuboriladi.</p></div></div>
+            <div class="step"><div class="icon-sq">🛡️</div><div class="step-info"><b>Xavfsizlik:</b><p>Yangi parol o‘rnatilgach, barcha qurilmalar tizimdan chiqarib yuboriladi.</p></div></div>
+        </div>
+        <div class="input-field"><i class="main-icon">🆔</i><input id="forgotID" type="number" placeholder="Telegram ID"></div>
+        <button class="btn-action" onclick="handleForgot()">KODNI YUBORISH</button>
+    </div>
+
+    <div id="otpBox" class="auth-card">
+        <div class="logo-container"><img src="images/logo.png" alt="Logo"></div>
+        <h2>Tasdiqlash kodi</h2>
+        <p id="otpMsg" class="desc">Botga yuborilgan bir martalik kodni kiriting.</p>
+        <div class="input-field"><i class="main-icon">🔑</i><input id="otpCode" type="number" placeholder="6 xonali kod"></div>
+        <button class="btn-action" onclick="verifyFinal()">TIZIMGA KIRISH</button>
+    </div>
+
+    <div id="resetPassBox" class="auth-card">
+        <div class="logo-container"><img src="images/logo.png" alt="Logo"></div>
+        <h2>Yangi parol o'rnatish</h2>
+        <p class="desc">Hisobingiz xavfsizligi uchun yangi parol kiriting.</p>
+        <div class="input-field">
+            <i class="main-icon">🔒</i>
+            <input id="newPass1" type="password" placeholder="Yangi parol">
+            <i class="toggle-pass" onclick="toggleVisibility('newPass1')">👁️</i>
+        </div>
+        <div class="input-field">
+            <i class="main-icon">🔒</i>
+            <input id="newPass2" type="password" placeholder="Parolni takrorlang">
+            <i class="toggle-pass" onclick="toggleVisibility('newPass2')">👁️</i>
+        </div>
+        <button class="btn-action" onclick="saveNewPassword()">PAROLNI YANGILASH</button>
+    </div>
+
+    <script>
+        const API = "http://localhost:8000/api";
+        let tempID = null;
+        let flowType = ""; 
+
+        function showPage(id) {
+            document.querySelectorAll('.auth-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function toggleVisibility(id) {
+            const el = document.getElementById(id);
+            el.type = el.type === "password" ? "text" : "password";
+        }
+
+        async function requestServer(data) {
+            try {
+                const response = await fetch(API, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+                return await response.json();
+            } catch (err) {
+                console.error(err);
+                return null;
+            }
+        }
+
+        async function handleLogin() {
+            const telegram = document.getElementById('logID').value;
+            const password = document.getElementById('logPass').value;
+            if(!telegram || !password) return alert("Ma'lumotlarni kiriting!");
+            const res = await requestServer({ event: "login_auth", telegram, password });
+            if(res?.status === "ok") {
+                tempID = telegram; flowType = "login";
+                document.getElementById('otpMsg').innerText = "ID va Parol to'g'ri. Botdagi kodni kiriting.";
+                showPage('otpBox');
+            } else { alert("❌ ID yoki Parol noto'g'ri!"); }
+        }
+
+        async function handleRegister() {
+            const phone = document.getElementById('regPhone').value;
+            const telegram = document.getElementById('regID').value;
+            if(!phone || !telegram) return alert("To'ldiring!");
+            const res = await requestServer({
+                event: "register_check", phone, telegram,
+                name: document.getElementById('regName').value,
+                password: document.getElementById('regPass').value
+            });
+            if(res?.status === "ok") {
+                tempID = telegram; flowType = "register";
+                showPage('otpBox');
+            } else { alert("❌ Raqam yoki ID band!"); }
+        }
+
+        async function handleForgot() {
+            const telegram = document.getElementById('forgotID').value;
+            if(!telegram) return alert("ID kiriting!");
+            const res = await requestServer({ event: "forgot_send", telegram });
+            if(res && res.status === "ok") {
+                tempID = telegram; flowType = "reset";
+                document.getElementById('otpMsg').innerText = "Parolni tiklash uchun botga kod yubordik.";
+                showPage('otpBox');
+            } else { alert("❌ Xatolik: ID topilmadi yoki server xatosi!"); }
+        }
+
+        async function verifyFinal() {
+            const otp = document.getElementById('otpCode').value;
+            if(!otp) return alert("Kod kiritilmadi!");
+            const res = await requestServer({
+                event: "verify_otp", telegram: tempID, otp: otp, mode: flowType
+            });
+            if(res?.status === "ok") {
+                if(flowType === "login") {
+                    localStorage.setItem("session", res.token);
+                    window.location.href = "dashboard.html";
+                } else if(flowType === "register") {
+                    alert("✅ Ro'yxatdan o'tdingiz!"); location.reload();
+                } else {
+                    alert("✅ Kod tasdiqlandi. Yangi parol o'rnating.");
+                    showPage('resetPassBox');
+                }
+            } else { alert("❌ Kod noto'g'ri!"); }
+        }
+
+        async function saveNewPassword() {
+            const p1 = document.getElementById('newPass1').value;
+            const p2 = document.getElementById('newPass2').value;
+            if (!p1 || !p2) return alert("Parollarni to'ldiring!");
+            if (p1.length < 6) return alert("Parol juda qisqa!");
+            if (p1 !== p2) return alert("Parollar mos emas!");
+
+            const res = await requestServer({
+                event: "update_password", telegram: tempID, new_password: p1
+            });
+
+            if (res?.status === "ok") {
+                alert("✅ Parol yangilandi! Endi yangi parol bilan kiring.");
+                location.reload();
+            } else { alert("❌ Xatolik yuz berdi!"); }
+        }
+    </script>
+</body>
+</html>
